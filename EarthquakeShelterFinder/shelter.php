@@ -20,6 +20,8 @@
     </style>
 </head>
 <body class="bg-light">
+    <!-- 카카오맵 API 호출 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=64180b065efc7bd4003142d8dd945d64"></script>
     <!-- Header Section -->
     <header class="bg-primary text-white py-3">
         <div class="container d-flex align-items-center">
@@ -73,13 +75,27 @@
                 <h2 class="mb-0"><?php echo $facility_info['name']; ?></h2>
             </div>
             <div class="card-body">
+                <p>
+                    <strong>위치</strong>
+                    <div id="map" style="width:500px;height:400px;"></div>
+                </p>
                 <p><strong>도로명 주소:</strong> <?php echo $facility_info['road_address']; ?></p>
                 <p><strong>지번 주소:</strong> <?php echo $facility_info['lot_address']; ?></p>
                 <p><strong>최대 수용 인원수:</strong> <?php echo number_format($facility_info['capacity']); ?>명</p>
                 <p><strong>상세 시설:</strong> <?php echo $facility_info['facility_detail']; ?></p>
-                <p><strong>관리 기관명:</strong> <?php echo $facility_info['management']; ?></p>
             </div>
         </div>
     </div>
+    <script>
+        // 지도 설정
+		var container = document.getElementById('map');
+		var options = {
+			center: new kakao.maps.LatLng(<?php echo $facility_info['latitude']; ?>, <?php echo $facility_info['longitude']; ?>),
+			level: 3
+		};
+
+        // 지도 생성
+		var map = new kakao.maps.Map(container, options);
+	</script>
 </body>
 </html>

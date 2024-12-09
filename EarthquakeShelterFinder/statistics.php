@@ -38,7 +38,7 @@
                 <svg id="line-chart" class="w-100" style="height: 500px;"></svg>
             </div>
             <div>
-                통계 자료 출처: <a href="">기상청</a>
+                통계 자료 출처: <a href="https://www.weather.go.kr/w/eqk-vol/archive/stat/trend.do">기상청</a>
             </div>
         </div>
     </div>
