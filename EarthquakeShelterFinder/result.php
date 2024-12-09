@@ -1,3 +1,6 @@
+<?php
+    include("./db_conn.php");
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>지진 대피소 찾기</title>
     <!-- Pretendard 폰트 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.2/dist/webfont.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -25,16 +28,41 @@
     </header>
     <!-- Search Section -->
     <div class="container my-4">
-        <form action="search_results.php" method="GET" class="d-flex justify-content-center">
+        <form action="result.php" method="GET" class="d-flex justify-content-center">
             <div class="input-group w-100" style="max-width: 800px;">
                 <!-- Dropdown Menu -->
-                <select name="search_type" class="form-select" style="max-width: 150px;">
-                    <option value="facility" selected>시설명</option>
-                    <option value="road_address">도로명주소</option>
-                    <option value="lot_address">지번주소</option>
-                </select>
+                <?php
+                    if ($_GET['search_type'] == "시설명") {
+                ?>
+                        <select name="search_type" class="form-select" style="max-width: 150px;">
+                            <option value="시설명" selected>시설명</option>
+                            <option value="도로명주소">도로명 주소</option>
+                            <option value="상세주소">지번 주소</option>
+                        </select>
+                <?php 
+                    }   
+                    else if($_GET['search_type'] == "도로명주소") {
+                ?>
+                        <select name="search_type" class="form-select" style="max-width: 150px;">
+                            <option value="시설명">시설명</option>
+                            <option value="도로명주소" selected>도로명 주소</option>
+                            <option value="상세주소">지번 주소</option>
+                        </select>
+                <?php           
+                    }
+                    else if($_GET['search_type'] == "상세주소") {
+                ?>
+                        <select name="search_type" class="form-select" style="max-width: 150px;">
+                            <option value="시설명">시설명</option>
+                            <option value="도로명주소">도로명 주소</option>
+                            <option value="상세주소" selected>지번 주소</option>
+                        </select>
+                <?php        
+                    } 
+                ?>
+
                 <!-- Search Input -->
-                <input type="text" name="q" class="form-control" placeholder="검색어를 입력하세요" aria-label="Search">
+                <input type="text" name="q" value="<?=$_GET['q']?>" class="form-control" placeholder="검색어를 입력하세요" aria-label="Search">
                 <!-- Search Button -->
                 <button class="btn btn-outline-secondary" type="submit">
                     <i class="bi bi-search"></i>
@@ -48,21 +76,19 @@
         <!-- Results List -->
         <div class="list-group">
             <?php
-            // 예제 데이터 (DB나 API를 통해 불러오는 데이터)
-            $results = [
-                ['name' => '서울시청', 'road_address' => '서울특별시 중구 세종대로 110', 'lot_address' => '서울특별시 중구 태평로1가 31'],
-                ['name' => '부산시청', 'road_address' => '부산광역시 연제구 중앙대로 1001', 'lot_address' => '부산광역시 연제구 연산동 1000'],
-                ['name' => '대구시청', 'road_address' => '대구광역시 중구 공평로 88', 'lot_address' => '대구광역시 중구 동인동1가 101'],
-            ];
+                $con = connect_db();
+                $sql = "SELECT 시설명, 상세주소, 도로명주소 FROM 시설정보 WHERE {$_GET['search_type']} LIKE '%{$_GET['q']}%'";
+                $ret = mysqli_query($con, $sql);
+                
+                while ($row = mysqli_fetch_array($ret)) {
+                    echo "<a href='shelter.php?name={$row['시설명']}&road_address={$row['도로명주소']}&lot_address={$row['상세주소']}' class='list-group-item list-group-item-action'>";
+                    echo "<h5 class='mb-1'>{$row['시설명']}</h5>";
+                    echo "<p class='mb-0'>도로명 주소: {$row['도로명주소']}</p>";
+                    echo "<p class='mb-0'>지번 주소: {$row['상세주소']}</p>";
+                    echo "</a>";
+                }
 
-            // 리스트 항목 출력
-            foreach ($results as $item) {
-                echo "<a href='#' class='list-group-item list-group-item-action'>";
-                echo "<h5 class='mb-1'>{$item['name']}</h5>";
-                echo "<p class='mb-0'>도로명 주소: {$item['road_address']}</p>";
-                echo "<p class='mb-0'>지번 주소: {$item['lot_address']}</p>";
-                echo "</a>";
-            }
+                mysqli_close($con);
             ?>
         </div>
     </div>

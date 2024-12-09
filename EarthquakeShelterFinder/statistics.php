@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지진 발생 횟수 시각화</title>
+    <title>연도별 지진 통계</title>
     <!-- Pretendard 폰트 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.2/dist/webfont.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body {
@@ -25,13 +26,13 @@
             <a href="index.php" class="text-white text-decoration-none">
                 <i class="bi bi-house-door-fill" style="font-size: 1.5rem;"></i>
             </a>
-            <h3 class="mb-0">지진 발생 횟수 시각화</h3>
+            <h3 class="mb-0">연도별 지진 통계</h3>
             <!-- Empty space to balance title and icon -->
             <span></span>
         </div>
     </header>
     <!-- Graph Section -->
-    <div class="container my-4">
+    <div class="container my-4 animate__animated animate__fadeIn animate__slow">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-12">
                 <svg id="line-chart" class="w-100" style="height: 500px;"></svg>
